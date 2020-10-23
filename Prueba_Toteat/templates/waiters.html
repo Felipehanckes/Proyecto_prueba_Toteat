@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<body>
+
+    <div class="StatisticContainer">
+    {% for name in results %}
+        <div class="InfoDisplay">
+            <div style="background-color: lightgrey;">
+                <h1 style="margin-left: 30px;">{{name.name}}</h1>
+            </div>
+            <div class="ListInfo">
+                <!--<div class="BlockManager">
+                    <h2>Turnos trabajados </h2>
+                    <div class="Show"><h3>Turnos dobles: </h3> <h2 style="padding-left: 17px;">{{name.double_shifts}}</h2> </div>
+                    <div class="Show"><h3>Turnos mañana: </h3> <h2>{{name.morning_shifts}}</h2> </div>
+                    <div class="Show"><h3>Turnos tarde: </h3> <h2 style="padding-left: 28px;">{{name.afternoon_shifts}}</h2> </div>
+                </div> -->
+                <div class="BlockManager" style="margin-left: 20px; border-right: 2px black solid;">
+                    <table style="margin-top: 20px;">
+                        <tr>
+                            <th><div style="font-size: x-large; margin-left: 15px;">Turnos Trabajados</div></th>
+                            <th><div style="font-size: x-large; margin-left: 15px; margin-right: 50px;"><div></th>
+                            </tr>
+                            <tr>
+                                <td><div style="font-size: x-large; margin-left: 15px;">Turnos dobles</div></td>
+                                <td><div style="font-size: x-large; margin-left: 15px;">{{name.double_shifts}}</div></td>
+                            </tr>
+                            <tr>
+                                <td><div style="font-size: x-large; margin-left: 15px;">Turnos mañana</div></td>
+                                <td><div style="font-size: x-large; margin-left: 15px;">{{name.morning_shifts}}</div></td>
+                            </tr>
+                            <tr>
+                                <td><div style="font-size: x-large; margin-left: 15px;">Turnos tarde </div></td>
+                                <td><div style="font-size: x-large; margin-left: 15px;">{{name.afternoon_shifts}}</div></td>
+                            </tr>
+                        </table>
+                </div>
+                <div class="BlockManager" style="margin-left: 20px; border-right: 2px black solid;">
+                    <table style="margin-top: 20px;">
+                        <tr>
+                            <th><div style="font-size: x-large; margin-left: 15px;">Zona</div></th>
+                            <th><div style="font-size: x-large; margin-left: 15px;">Boletas</div></th>
+                            <th><div style="font-size: x-large; margin-left: 15px ;margin-right: 25px;">Monto por zona<div></th>
+                        </tr>
+                        {% for zones in name.zone %}
+                        <tr>
+                            <td><div style="font-size: x-large; margin-left: 15px;">{{zones.0}}</div></td>
+                            <td><div style="font-size: x-large; margin-left: 15px;">{{zones.1}}</div></td>
+                            <td><div style="font-size: x-large; margin-left: 15px;">${{zones.2}}</div></td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    
+                </div>
+            </div>
+        </div>    
+    {% endfor %}
+    </div>
+</body>
+{% endblock %}
