@@ -4,15 +4,19 @@
 <head>
     <meta charset="utf-8">
     {% block static %}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'css/test.css' %}">
     {% endblock %}
 </head>
 
 {% block navbar %}
 <div class="Navbar">
-    <i class="glyphicon glyphicon-home"><a href="{% url 'pikadaapp:inicio' %}"></a></i>
+    <a href="{% url 'pikadaapp:inicio' %}" style="width: 100px;">
+        <i class="fa fa-home" style="font-size: 30px; color: #f2f2f2; margin-top: -5px;"></i>
+    </a>
     <a href="{% url 'pikadaapp:waiters' %}"> Meseros</a>
+    <a href="{% url 'pikadaapp:cashiers' %}"> Cajeros</a>
+    <a href="{% url 'pikadaapp:categories' %}"> Carta</a>
 </div>
 {% endblock %}
 

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<body>
+    <div class="StatisticContainer">
+    {% for category in results %}
+        <div class="InfoDisplay">
+            <div class="ListInfo" style="background-color: lightgrey; margin-left: 0;">
+                <div style="background-color: lightgrey;">
+                    <h1 style="margin-left: 30px;">{{category.name}}</h1>
+                </div>
+                <div style="float: right; margin-left: auto; margin-right: 0%; text-align: right;">
+                    {% if category.name != 'Bebidas'%}
+                    <h3>Total agregado de {{category.name}} servidos: {{category.total_servings}}</h3>
+                    {%else%}
+                    <h3>Total agregado de {{category.name}} servidas: {{category.total_servings}}</h3>
+                    {%endif%}
+                    <h3>Presencia agregada de {{category.name}} en boletas: {{category.total_orders}}</h3>
+                </div>
+                <div style="float: right; margin-left: 30px; margin-right: 0%; text-align: right;">
+                    <h1>Se generó una venta total de ${{category.total}}</h1>
+                    <h4>Representa el {{category.income_rate}}% del total de las ventas</h4>
+                </div>
+            </div>
+            <div class="ListInfo" style="margin: auto;">
+                <div class="BlockManager" style="width: 100%; border: 0px;">
+                    <table style="margin-top: 20px;">
+                        <tr>
+                            <th><div class="ShowMainString">Plato</div></th>
+                            <th><div class="ShowMainString">Unidades vendidas</div></th>
+                            <th><div class="ShowMainString">Preferencia en categoría</div></th>
+                            <th><div class="ShowMainString">Precio unitario</div></th>
+                            <th><div class="ShowMainString">Total Ventas</div></th>
+                            <th><div class="ShowMainString">Porcentaje Ingresos</div></th>
+                        </tr>
+                        {% for product in category.products %}
+                        <tr>
+                            <td><div class='ShowMainString' style="text-align: left;">{{product.name}}</div></td>
+                            <td><div class='ShowMainNumber'>{{product.serving_number}}</div></td>
+                            <td><div class='ShowMainNumber'>{{product.order_qty}}%</div></td>
+                            <td><div class='ShowMainNumber'>${{product.price}}</div></td>
+                            <td><div class='ShowMainNumber'>${{product.total_sales}}</div></td>
+                            <td><div class='ShowMainNumber'>{{product.income_rate}}%</div></td>
+
+
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>    
+    {% endfor %}
+    </div>
+    <div style="background-color: lightgrey; align-content: auto; height: 100px;">
+        <h1 style="margin-right: 150px; font-size: 40px; padding-top: 30px; text-align: right;">Venta agregada total: ${{total}}</h1>
+    </div>
+</body>
+{% endblock %}

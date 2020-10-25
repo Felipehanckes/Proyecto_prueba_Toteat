@@ -41,6 +41,9 @@ def get_shift(date_string):
 
 
 def info_by_waiter(json_data, date_filter=None):
+    '''
+    Just retrieve data from waiters.
+    '''
     waiters = dict()
     for order in json_data:
         date = get_shift(order['date_closed'])
@@ -66,9 +69,24 @@ def info_by_waiter(json_data, date_filter=None):
             waiters[order['waiter']]['shift'][date[1]].add(date[0])
     return waiters
 
+def info_by_cashier(json_data):
+    cashier = dict()
+    for order in json_data:
+        date = get_shift(order['date_closed'])
+        if order['cashier'] in cashier:
+            cashier[order['cashier']]['shift'][date[1]].add(date[0])
+            cashier[order['cashier']]['selling_amount'] += order['total']
+        else:    
+            cashier[order['cashier']] = {
+                'shift': {'morning': set(), 'afternoon': set()},
+                'selling_amount': order['total'],
+            }
+    return cashier
 
 def info_by_plate(json_data, date_filter=None):
-    '''return a summary by plate type '''
+    '''
+    Just retrieve data from plates and products.
+    '''
     information = dict()
     for order in json_data:
         products_ordered = []
@@ -77,44 +95,83 @@ def info_by_plate(json_data, date_filter=None):
                 if product['name'] in information[product['category']]:
                     if product['name'] in products_ordered:
                         information[product['category']][product['name']]['serving_number'] += 1
+                        information[product['category']][product['name']]['total'] += product['price']
                     else:    
                         information[product['category']][product['name']]['serving_number'] += 1
                         information[product['category']][product['name']]['order_cuantity'] += 1
+                        information[product['category']][product['name']]['total'] += product['price']
+
                 else:
                     information[product['category']][product['name']] = {
                         'serving_number': 1,
                         'order_cuantity': 1,
+                        'total': product['price'],
+                        'price': product['price']
                     }
             else:
                 information[product['category']] = {
                     product['name']: {
                         'serving_number': 1,
                         'order_cuantity': 1,
+                        'total': product['price'],
+                        'price': product['price']
                     }}
             products_ordered.append(product['name'])
     print(information)
     return information
-                
-            
 
-def info_by_payment(json_data, date_filter=None):
-    payments = dict()
-    max_date = get_date_filter(date_filter)
-    print('max_date es: {}'.format(max_date))
+def general_information(json_data, date_filter=None):
+    '''
+    Just retrieve data from plates and products.
+    '''
+    general = dict()
+    general['table'] = {}
+    general['payments'] = {}
     for order in json_data:
-        if date_filter == None:
-            for pay in order['payments']:
-                print(pay)
-                if pay['type'] in payments:
-                    payments[pay['type']] += pay['amount']
-                else:
-                    payments[pay['type']] = pay['amount']
+        if order['table'] in general['table']:
+            general['table'][order['table']]['average'].append(order['diners'])
+            general['table'][order['table']]['amount'].append(order['total'])
         else:
-            date = convert_to_date(order['date_opened'])
-            if max_date <= date:
-                for pay in order['payments']:
-                    if pay['type'] in payments:
-                        payments[pay['type']] += pay['amount']
-                    else:
-                        payments[pay['type']] = pay['amount']
-    return payments        
+            general['table'][order['table']] = {
+                'average': [],
+                'amount': []
+            }
+        for payment in order['payments']:
+            if payment['type'] in general['payments']:
+                general['payments'][payment['type']]['total'] += payment['amount']
+                if order['zone'] in general['payments'][payment['type']]['zone']:
+                    general['payments'][payment['type']]['zone'][order['zone']] += payment['amount']
+                else:
+                    general['payments'][payment['type']]['zone'][order['zone']] = payment['amount']
+            else:
+                general['payments'][payment['type']] = {
+                    'total': payment['amount'],
+                    'zone': {}
+                }
+    print(general)
+    return general        
+
+def format_number(number):
+    rework = False  
+    str_number = str(number)
+    if ','  '.' in str_number:
+        rework = True
+        num_parts = str_number.split(',').split('.')
+        str_number = number[0]
+    else:
+        str_number = str(number)
+    length = len(str_number)
+    decomposition = ''
+    for i in range(length):
+        if i % 3 == 0 and i != 0:
+            print('i es {}, y i%3 es: {}'.format(i, i%3))
+            decomposition  = str_number[length - 1 - i] + '.' + decomposition
+        else:
+            decomposition = str_number[length - 1 - i] + decomposition
+    if rework == True:
+        decomposition = decomposition + ',' + str(num_parts[1])
+    return decomposition
+
+def format_float(number):
+    str_number = str(number).replace('.', ',')
+    return str_number
