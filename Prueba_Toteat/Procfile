@@ -1,0 +1,1 @@
+web: gunicorn Prueba_Toteat.wsgi --log-file -

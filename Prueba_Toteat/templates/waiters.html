@@ -47,6 +47,82 @@
                     </table>
                 </div>
             </div>
+            <details>
+                <summary style="border-bottom: #333 3px solid; color: #333; font-size: x-large; margin-left: 75px; margin-right: 75px;">Boletas que no cuadran:</summary>
+                <div>
+                    {% for order in diference %}
+                    {%if order.diferent == True and order.waiter == name.name %}
+                    <div class="InfoDisplay" style="border: none;"></div>
+                        <h3 style="background-color: lightgrey; margin-left: 150px; margin-right: 150px;">Boleta: {{order.id}}</h3>                       
+                        <div class="ListInfo" style="margin-top:0%; border: lightgray 2px solid; margin-left: 150px; margin-right: 150px;">
+                                <div>
+                                    <p>Mesero: {{order.waiter}}</p>
+                                    <p>Cajero: {{order.cashier}}</p>
+                                </div>
+                                <div style="display: flex; flex-direction: column; margin: auto; margin-top: 10px;">
+                                    <details>
+                                        <summary style="font-size: x-large;">Detalle de vendidos</summary>
+                                        <table style="font-size: large; margin: auto;">
+                                            {% for producto in order.products %}
+                                            <tr> 
+                                                <td>{{producto.0}}</td>
+                                                <td>{{producto.1}}</td>
+                                            </tr>
+                                            {%endfor%}
+                                        </table>
+                                    </details>
+                                    <table style="margin-top: 15px;">
+                                        <tr>
+                                            <td style="font-size: 14px; font-weight: bold;">Total Poductos:</td>
+                                            <td style="font-size: 14px; font-weight: bold; margin-left: 10px;">{{order.prod_total}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div style="margin: auto;">
+                                    <h4>Total cobrado en boleta: {{order.total}}</h4>
+                                    <h4>Diferencia en cobro: {{order.diference}}</h4>
+                                </div>
+                        </div>
+                        {%endif%}
+                        {%endfor%}
+                </div>
+            </details>
+            <details>
+                <summary style="border-bottom: #333 3px solid; color: #333; font-size: x-large; margin-left: 75px; margin-right: 75px; margin-top: 15px;">Boletas que cuadran:</summary>
+                <div>
+                    {% for order in diference %}
+                    {%if order.diferent == False and order.waiter == name.name %}
+                    <div class="InfoDisplay" style="border: none;"></div>
+                        <h3 style="background-color: lightgrey; margin-left: 150px; margin-right: 150px;">Boleta: {{order.id}}</h3>                       
+                        <div class="ListInfo" style="margin-top:0%; border: lightgray 2px solid; margin-left: 150px; margin-right: 150px;">
+                                <div>
+                                    <p>Mesero: {{order.waiter}}</p>
+                                    <p>Cajero: {{order.cashier}}</p>
+                                </div>
+                                <div style="display: flex; flex-direction: column; margin: auto; margin-top: 10px;">
+                                    <details>
+                                        <summary style="font-size: x-large;">Detalle de vendidos</summary>
+                                        <table style="font-size: large; margin: auto;">
+                                            {% for producto in order.products %}
+                                            <tr> 
+                                                <td>{{producto.0}}</td>
+                                                <td>{{producto.1}}</td>
+                                            </tr>
+                                            {%endfor%}
+                                        </table>
+                                    </details>
+                                    <table style="margin-top: 15px;">
+                                        <tr>
+                                            <td style="font-size: x-large; font-weight: bold;">Total Poductos:</td>
+                                            <td style="font-size: x-large; font-weight: bold; margin-left: 10px;">{{order.prod_total}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                        </div>
+                        {%endif%}
+                        {%endfor%}
+                </div>
+            </details>
             <div style="background-color: lightgrey; align-content: auto; height: 40px;">
                 <h1 style="margin-right: 150px; font-size: 40px; margin-top: -4px;text-align: right;">Total Vendido: ${{name.total}}</h1>
             </div>

@@ -175,3 +175,26 @@ def format_number(number):
 def format_float(number):
     str_number = str(number).replace('.', ',')
     return str_number
+
+def find_diferences(json_data):
+    orders = list()
+    for order in json_data:
+        new_order = dict()
+        new_order['waiter'] = order['waiter']
+        new_order['cashier'] = order['cashier']
+        prod_total = 0
+        products = list()
+        for prod in order['products']:
+            prod_total += prod['price']
+            products.append((prod['name'], prod['price']))
+        new_order['products'] = products
+        new_order['prod_total'] = prod_total
+        new_order['total'] = order['total']
+        new_order['id'] = order['id']
+        if new_order['total'] != new_order['prod_total']:
+            new_order['diferent'] = True
+            new_order['diference'] = new_order['prod_total'] - new_order['total']
+        else:
+            new_order['diferent'] = False
+        orders.append(new_order)
+    return orders

@@ -5,7 +5,8 @@ from django.shortcuts import render
 import json
 import requests
 from .preproces import (general_information, info_by_plate, 
-info_by_waiter, format_number, format_float, info_by_cashier)
+info_by_waiter, format_number, format_float, info_by_cashier,
+find_diferences)
 
 
 url = 'https://storage.googleapis.com/backupdatadev/ejercicio/ventas.json'
@@ -65,8 +66,8 @@ def waiters(request):
     to be used in HTML render.
     '''
     context = {'results': [], 'total': 0}
-    req = requests.get(url).json()
-    req = info_by_waiter(req)
+    response = requests.get(url).json()
+    req = info_by_waiter(response)
     for waiter in req.keys():
         new_waiter = {'name': waiter}
         print(req[waiter]['shift']['afternoon'])
@@ -84,7 +85,9 @@ def waiters(request):
         new_waiter['total'] = format_number(int(new_waiter['total']))
         context['results'].append(new_waiter)
     context['total'] = format_number(int(context['total']))
-    print(context)
+    diference = find_diferences(response)
+    context['diference'] = diference
+    #print(context['diference'])
 
     return render(request, 'waiters.html', context)
 # Create your views here.
@@ -129,15 +132,26 @@ def inicio(request):
 
 def cashiers(request):
     context = {'results': []}
-    req = requests.get(url).json()
-    req = info_by_cashier(req)
+    response = requests.get(url).json()
+    req = info_by_cashier(response)
     print(req)
+    diference = find_diferences(response)
+    context['diference'] = diference
     for cashier in req.keys():
         new_cashier = {'name': cashier}
+        new_cashier['total_diference'] = 0
         new_cashier['double_shifts'] = len(
             [value for value in req[cashier]['shift']['morning'] if value in req[cashier]['shift']['afternoon']])
         new_cashier['morning_shifts'] = len(req[cashier]['shift']['morning']) - new_cashier['double_shifts']
         new_cashier['afternoon_shifts'] = len(req[cashier]['shift']['afternoon']) - new_cashier['double_shifts']
         new_cashier['selling_amount'] = format_number(int(req[cashier]['selling_amount']))
+        for diferent in context['diference']:
+            print(diferent)
+            if diferent['cashier'] == new_cashier['name']:
+                if diferent['diferent'] == True:
+                    new_cashier['total_diference'] += diferent['diference']
+        if 'total_diference' in new_cashier.keys():
+            new_cashier['total_diference'] = format_number(int(new_cashier['total_diference']))
         context['results'].append(new_cashier)
+    
     return render(request, 'cashiers.html', context)
