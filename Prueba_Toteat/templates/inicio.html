@@ -2,9 +2,83 @@
 {% block content %}
 
 <body>
-    <div>Esta si el pagina que querias wacho</div>
-    <div>
-        {{req}}
+    <div class="StatisticContainer">
+        <details style="margin-top: 45px;">
+            <summary style="font-size: 40px; background-color: #333; color: #f2f2f2; height: 50px; text-align: justify;"> Estadisticas de pago 
+                <p style="font-size: 20px; background-color: #f2f2f2; color: black; margin-left: 200px; max-width: 1100px;">
+                    Desglose de los tipos de pago recibidos para cada medio de pago y por zona del restaurant. 
+                    <br>
+                    <hr style="margin-left: 200px; margin-right: 200px;">
+                </p>
+
+            </summary>
+            <div style="margin-top: 80px;">
+
+                {%for pay in payments %}
+                <div class="ListInfo" style="flex-direction: row; display: flex; border: solid lightgray 2px; margin-top: 15px;">
+                    <h1 style="width: 300 px; margin: auto;">
+                        {{pay.name}}
+                    </h1>
+                    <div style="margin: auto">
+                        {%for zone in pay.zones%}
+                        <div style="flex-direction: row; display: flex;">
+                            <h3 style="padding-right: 150;">{{zone.name}}</h3>
+                            <div style="width: 50px;"></div>
+                            <h3 style="margin-left: auto; margin-right: 0%;">${{zone.total}}</h3>
+                        </div>
+                        {%endfor%}
+                    </div>
+                </div>
+                {%endfor%}
+            </div>
+        </details>    
+        
+        <details style="margin-top: 80px;">
+            <summary style="font-size: 40px; background-color: #333; color: #f2f2f2; height: 50px;"> Estadísticas por mesa 
+                <p style="font-size: 20px; background-color: #f2f2f2; color: black; margin-left: 200px; max-width: 1100px;">
+                    Desglose del uso en el tiempo, los ingresos totales y el promedio de ingreso por mesa.
+                    <br>
+                    <hr style="margin-left: 200px; margin-right: 200px;">
+                </p>
+            </summary>
+            <div style="margin-top: 80px;">
+                {%for name in results%}
+                <div class="ListInfo" style="border: 2px lightgrey solid; margin-top: 15px;">
+                    <div>
+                        <div style=" margin-top: -21px; background-color: lightgrey;">
+                            <h1 style="margin-left: 150px;">Mesa {{name.name}}</h1>
+                        </div>
+                        <div style="display: flex; flex-direction: row;">
+                            <div>
+                                <h3 style="margin-left: 75px;">Aforo minimo: </h3> 
+                                {% if name.min_customers.1 == 1 %}
+                                <h3 style="margin-left: 75px;">{{name.min_customers.1}} comensal </h3>
+                                {% else %}
+                                <h3 style="margin-left: 75px;">{{name.min_customers.1}} comensales </h3>
+                                {%endif%}
+                                <h4 style="margin-left: 75px;">{{name.min_customers.0}}% del tiempo</h4>
+                            </div>
+                            <div>
+                                <h3 style="margin-left: 75px;">Aforo máximo: </h3> 
+                                {% if name.max_customers.1 == 1 %}
+                                <h3 style="margin-left: 75px;">{{name.max_customers.1}} comensal </h3>
+                                {% else %}
+                                <h3 style="margin-left: 75px;">{{name.max_customers.1}} comensales </h3>
+                                {%endif%}
+                                <h4 style="margin-left: 75px;">{{name.max_customers.0}}% del tiempo</h4>
+                            </div>
+                        </div>
+                        <h2 style="margin-left: 75px;">Aforo promedio de la mesa: {{name.avg_customers}}</h2>
+                    </div>
+                    <div style="margin: auto;">
+                        <h2 style="margin-left: 75px;">Promedio de ventas en la mesa: ${{name.avg_income}}</h2>
+                        <h2 style="margin-left: 75px;">Total ventas en la mesa: ${{name.total_income}}</h2>
+                    </div>
+                </div>
+                {%endfor%}
+            </div>
+        </details>
     </div>
 </body>
-{% endblock %}
+
+{%endblock%}

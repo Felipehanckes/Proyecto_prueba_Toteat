@@ -18,15 +18,16 @@
     text-decoration: none;
     font-size: 17px;
 }
-.Navbar a:hover{
+.Navbar a:hover {
     background: #ddd;
 }
 
 .BaseContainer {
-    /*background-color: slateblue;*/
     background-color: #f2f2f2;
     display: flex;
     flex-direction: column;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 .StatisticContainer{
@@ -53,6 +54,9 @@
 .BlockManager{
     display: flex;
     flex-direction:column;
+    overflow: hidden;
+    width: 450px;
+    margin-left: 20px; 
 }
 
 .Show{
@@ -65,4 +69,27 @@
     align-items: baseline;
     padding-right: 10px;
     font-size: larger;
+}
+
+.BlockManager div{
+    font-size: x-large;
+    margin-left: 15px;
+}
+
+.ShowMainNumber{
+    border-bottom:lightgray 1px dotted; 
+    width: 170px; 
+    overflow: hidden; 
+    height: 80px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.ShowMainString{
+    border-bottom:lightgray 1px dotted; 
+    width: 170px; 
+    overflow: hidden; 
+    height: 80px;
+    text-align: left;
+    vertical-align: middle;
 }

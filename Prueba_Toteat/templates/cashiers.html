@@ -3,7 +3,6 @@
 
 <body>
     <div class="StatisticContainer">
-
     {% for name in results %}
         <div class="InfoDisplay">
             <div style="background-color: lightgrey;">
@@ -30,28 +29,10 @@
                             </tr>
                         </table>
                 </div>
-                <div class="BlockManager" style="margin: auto; width: auto;">
-                    <table style="margin-top: 20px;">
-                        <tr>
-                            <th><div class="ShowMainString">Zona</div></th>
-                            <th><div class="ShowMainString">Boletas</div></th>
-                            <th><div class="ShowMainString">Monto por zona<div></th>
-                        </tr>
-                        {% for zones in name.zone %}
-                        <tr>
-                            <td><div class="ShowMainString">{{zones.0}}</div></td>
-                            <td><div class="ShowMainNumber">{{zones.1}}</div></td>
-                            <td><div class="ShowMainNumber">${{zones.2}}</div></td>
-                        </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-            </div>
-            <div style="background-color: lightgrey; align-content: auto; height: 40px;">
-                <h1 style="margin-right: 150px; font-size: 40px; margin-top: -4px;text-align: right;">Total Vendido: ${{name.total}}</h1>
-            </div>
-        </div>    
-    {% endfor %}
+                <h1 style="margin: auto;">Total registrado: ${{name.selling_amount}}</h1>
+        </div>
+    {%endfor%}
     </div>
 </body>
-{% endblock %}
+
+{%endblock%}
